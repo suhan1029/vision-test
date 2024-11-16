@@ -4,16 +4,23 @@ from PIL import Image
 import os
 from dotenv import load_dotenv
 import base64
+import toml
+
+# TOML 파일에서 환경 변수 로드
+def load_config(env="default"):
+    config = toml.load("config.toml")
+    return config[env]
 
 # 환경 변수 로드
-load_dotenv()
+config = load_config()
+api_key = config.get("OPENAI_API_KEY")
 
-# 환경변수에서 OpenAI API 키 가져오기
-client = OpenAI(
-    api_key=os.environ.get("OPENAI_API_KEY")
-)
-if not client.api_key:
-    raise ValueError("OpenAI API 키가 설정되지 않았습니다. 환경 변수를 확인하세요.")
+if not api_key:
+    raise ValueError("OpenAI API 키가 설정되지 않았습니다. TOML 파일을 확인하세요.")
+
+
+# OpenAI 클라이언트 설정
+client = OpenAI(api_key=api_key)
 
 
 # 사용자 정의 CSS 적용
@@ -22,7 +29,7 @@ def local_css(file_name):
         st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
 # Flask 앱의 CSS를 로드 (Flask의 style.css 파일 경로를 지정)
-local_css("static/css/style.css")
+local_css("style.css")
 
 def describe_image(base64_image, mime_type):
     try:
