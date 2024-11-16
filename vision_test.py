@@ -1,26 +1,11 @@
 import streamlit as st
 from openai import OpenAI
 from PIL import Image
-import os
 from dotenv import load_dotenv
 import base64
-import toml
-
-# TOML 파일에서 환경 변수 로드
-def load_config(env="default"):
-    config = toml.load("config.toml")
-    return config[env]
-
-# 환경 변수 로드
-config = load_config()
-api_key = config.get("OPENAI_API_KEY")
-
-if not api_key:
-    raise ValueError("OpenAI API 키가 설정되지 않았습니다. TOML 파일을 확인하세요.")
-
 
 # OpenAI 클라이언트 설정
-client = OpenAI(api_key=api_key)
+client = OpenAI()
 
 
 # 사용자 정의 CSS 적용
