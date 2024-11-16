@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 import base64
 
 # OpenAI 클라이언트 설정
-client = OpenAI()
+client = OpenAI(api_key=st.secrets["general"]["openai_api_key"])
 
 
 # 사용자 정의 CSS 적용
